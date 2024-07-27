@@ -1,7 +1,12 @@
-const mongoose = require('mongoose')
+import * as dotenv from 'dotenv'
+dotenv.config()
+
+import { MongoClient } from "mongodb";
+
+const client = new MongoClient(process.env.URI);
 
 async function connectDB() {
-    await mongoose.connect('', {},
+    await mongoose.connect(client, {},
         (error) => {
             if (error) {
                 console.log('Falha ao autenticar com mongodb');
