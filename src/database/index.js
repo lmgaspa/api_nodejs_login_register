@@ -1,22 +1,28 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-import { MongoClient } from "mongodb";
+dotenv.config();
 
-const client = new MongoClient(process.env.URI);
+const start = process.env.URI;
+
+if (!start) {
+    console.error('A variável de ambiente URI não está definida.');
+    process.exit(1);
+}
 
 async function connectDB() {
-    await mongoose.connect(client, {},
-        (error) => {
-            if (error) {
-                console.log('Falha ao autenticar com mongodb');
-                console.log(error);
-                return;
-            }
-            console.log('Conexão com mongodb estável')
-        })
+    try {
+        await mongoose.connect(start, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+        console.log('Conexão com mongodb estável');
+    } catch (error) {
+        console.log('Falha ao autenticar com mongodb');
+        console.log(error);
+    }
 }
 
 mongoose.Promise = global.Promise;
 
-module.exports = connectDB
+module.exports = connectDB;
