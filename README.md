@@ -1,4 +1,6 @@
-﻿1. Welcome to our Login and Registration API
+ Hello
+ 
+ 1. Welcome to our Login and Registration API
 
 2. We use NodeJs, express, jwt and bcrypt.
 
