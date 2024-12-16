@@ -1,14 +1,23 @@
 const mongoose = require('mongoose');
-mongoose.set('strictQuery', true); // Configura strictQuery como true
+mongoose.set('strictQuery', true);
 
 const Schema = mongoose.Schema;
 const bcryptjs = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
+const splitUUID = (uuid) => {
+    const compactUUID = uuid.replace(/-/g, '');
+    const parts = [];
+    for (let i = 0; i < compactUUID.length; i += 3) {
+        parts.push(compactUUID.substring(i, i + 3));
+    }
+    return parts;
+};
+
 const UserSchema = new Schema({
     id: {
-        type: String,
-        default: uuidv4,
+        type: [String],
+        default: () => splitUUID(uuidv4()),
         unique: true,
     },
     name: {
