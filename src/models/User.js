@@ -6,7 +6,7 @@ const bcryptjs = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
 const generateCustomId = () => {
-    // Remove hífens do UUID e pega os primeiros 12 caracteres
+    
     return uuidv4().replace(/-/g, '').substring(0, 12);
 };
 
