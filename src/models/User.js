@@ -5,19 +5,15 @@ const Schema = mongoose.Schema;
 const bcryptjs = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
-const splitUUID = (uuid) => {
-    const compactUUID = uuid.replace(/-/g, '');
-    const parts = [];
-    for (let i = 0; i < compactUUID.length; i += 3) {
-        parts.push(compactUUID.substring(i, i + 3));
-    }
-    return parts;
+const generateCustomId = () => {
+    // Remove hífens do UUID e pega os primeiros 12 caracteres
+    return uuidv4().replace(/-/g, '').substring(0, 12);
 };
 
 const UserSchema = new Schema({
     id: {
-        type: [String],
-        default: () => splitUUID(uuidv4()),
+        type: String,
+        default: generateCustomId,
         unique: true,
     },
     name: {
@@ -41,7 +37,7 @@ const UserSchema = new Schema({
     }
 });
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         const hash = await bcryptjs.hash(this.password, 10);
         this.password = hash;
